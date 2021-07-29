@@ -1,11 +1,17 @@
 const express = require('express');
-const app = express();
 const fs = require('fs')
+const morgan = require('morgan')
+
+const app = express();
+
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
 const tours =JSON.parse( fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
 
 
 app.use(express.json())
+app.use(morgan('dev'))
 
 
 const getAllTours = (req,res)=>{
@@ -87,17 +93,74 @@ const deleteTour = (req,res)=>{
     })
 }
 
-// app.get('/api/v1/tours', getAllTours);
 
-// app.get('/api/v1/tours/:id',getTour)
+const getAllUsers = (req,res)=>{
+    res.status(200).json({
+        results:tours.length,
+        status:'Success',
+        data:{
+            User:"<Getiing The All User...>"
+        }
+    })
+}
 
-// app.post('/api/v1/tours',createTour)
-// app.patch('/api/v1/tours/:id',updateTour)
+const getUser = (req,res)=>{
+    
+  
+    res.status(200).json({
+        status:'Success',
+        data:{
+            User:`<Getiing The User ${req.params.id}`
+        }
+    })
+}
 
-// app.delete('/api/v1/tours/:id',deleteTour)
+const createUser = (req,res)=>{
+   
+        res.status(201).json({
+            status:'Success',
+            data:{
+                User:"<Created The User...>"
+            }
+        })
+}
+    
 
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app.route('/api/v1/tours/id').get(getTour).patch(updateTour).delete(deleteTour);
+
+const updateUser = (req,res)=>{
+   
+    const id = req.params.id *1;
+
+    if(id > tours.length){
+        return res.status(404).json({
+            Success:"Fail",
+            Message:"Invalid ID"
+        })
+    }
+    res.status(200).json({
+        status:'Success',
+        data:{
+            User:"<Upadted The User...>"
+        }
+    })
+}
+
+const deleteUser = (req,res)=>{
+   
+    
+    res.status(200).json({
+        status:'Success',
+        data:{
+            User:"<Deleted The User...>"
+        }
+    })
+}
+
+tourRouter.route('/api/v1/tours').get(getAllTours).post(createTour);
+tourRouter.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
+
+userRouter.route('/api/v1/users').get(getAllUsers).post(createUser);
+userRouter.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 
 
