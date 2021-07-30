@@ -9,7 +9,7 @@ const userRouter = require("./routes/userRoutes");
 
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
-console.log(process.env);
+
 if (process.env.NODE_EN === "development") {
   app.use(morgan("dev"));
 }
