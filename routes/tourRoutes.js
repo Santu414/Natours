@@ -9,12 +9,14 @@ const {
   updateTour,
   deleteTour,
   getTourStats,
+  getMonthlyPlan,
 } = require("../controllers/tourControllers");
 
 //router.param("id", checkID);
 
 router.get("/top-5-cheap", aliasTopTours, getAllTours);
 router.get("/tour-stats", getTourStats);
+router.get("/monthly-plan/:year", getMonthlyPlan);
 router.get("/", getAllTours);
 router.get("/:id", getTour);
 router.post("/", createTour);
